@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sps Basavanahalli</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMF - Fresh Dairy Products</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    .login-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .login-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .login-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .otp-section {
+      display: none;
+    }
+    .otp-section.active {
+      display: block;
+    }
+    .hidden {
+      display: none;
+    }
+    body {
+      background: url('BCG.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: -1;
+    }
+    header {
+      background: #0077ff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.2s;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product h3 {
+      margin: 15px 0 5px;
+    }
+    .product p {
+      color: #555;
+    }
+    .price {
+      color: #0077ff;
+      font-weight: bold;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      background: #0077ff;
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #005fcc;
+    }
+    footer {
+      margin-top: 40px;
+      background: #222;
+      color: #ccc;
+      padding: 20px;
+      text-align: center;
+    }
+    .cart {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 250px;
+    }
+    .cart h3 {
+      margin-bottom: 10px;
+    }
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 5px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .checkout-btn {
+      margin-top: 10px;
+      width: 100%;
+      background: #28a745;
+    }
+      .payment-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1001;
+      }
+      .payment-container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      }
+      .payment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .payment-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .payment-methods {
+        display: grid;
+        gap: 15px;
+        margin: 20px 0;
+      }
+      .payment-method {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .payment-method:hover {
+        border-color: #0077ff;
+      }
+      .payment-method img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+      }
+      .payment-method.selected {
+        border-color: #0077ff;
+        background: #f0f7ff;
+      }
+      .order-summary {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .delivery-address {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+      .payment-qr {
+        text-align: center;
+        margin: 15px 0;
+      }
+      .payment-qr img {
+        width: 220px;
+        height: 220px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto 10px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background: #fff;
+      }
+      .buy-now-btn {
+        background: #0077ff;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none;
+        margin-left: 10px;
+      }
+      .buy-now-btn:hover {
+        background: #0055cc;
+      }
+    .profile-icon {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    .profile-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .profile-container.active {
+      display: flex;
+    }
+    .profile-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .profile-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+    .profile-form .form-group {
+      margin-bottom: 15px;
+    }
+    .profile-form label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+    .profile-form input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .profile-photo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0077ff;
+      margin-bottom: 10px;
+    }
+    .photo-upload-btn {
+      background: #f0f0f0;
+      color: #333;
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    .profile-form textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      min-height: 60px;
+      resize: vertical;
+    }
+    .profile-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .close-profile {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+    /* Header search and purchase menu */
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .logo { font-weight: 700; color: #fff; }
+    .search-wrap { display: flex; gap: 8px; align-items: center; }
+    .search-wrap input[type="search"] { padding: 8px 10px; border-radius: 8px; border: none; width: 320px; }
+    .search-wrap button { padding: 8px 10px; border-radius: 8px; border: none; cursor: pointer; }
+    .back-button { 
+        background: #fff; 
+        color: #0077ff; 
+        padding: 8px 16px; 
+        border-radius: 8px; 
+        border: none; 
+        cursor: pointer; 
+        margin-right: 10px; 
+        display: none; 
+    }
+    .back-button:hover { 
+        background: #f0f7ff; 
+    }
+    .header-actions { display:flex; align-items:center; gap:12px; }
+    .purchase-menu { background: #fff; color: #0077ff; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
+    .purchase-dropdown { position: absolute; right: 20px; top: 70px; background: #fff; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); padding: 10px; display: flex; flex-direction: column; gap:8px; z-index: 1200; }
+    .purchase-dropdown button { background: none; border: none; padding: 8px 12px; text-align: left; cursor: pointer; }
+    .purchase-dropdown button:hover { background: #f2f6ff; border-radius:6px; }
+    .hidden { display: none !important; }
+
+    /* Confirmation modal */
+    .confirmation-modal { position: fixed; inset:0; display:none; justify-content:center; align-items:center; background: rgba(0,0,0,0.5); z-index:1500; }
+    .confirmation-container { background: #fff; padding: 30px; border-radius: 12px; width: 90%; max-width: 480px; text-align:center; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+    .confirmation-icon { width:100px; height:100px; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:44px; background: linear-gradient(135deg,#28a745,#66d17b); color:#fff; }
+    .confirmation-title { font-size:22px; margin: 10px 0; color:#222; }
+    .confirmation-sub { color:#666; margin-bottom:18px; }
+    .confirmation-actions { display:flex; gap:10px; justify-content:center; margin-top:12px; }
+    .confirmation-actions button { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; }
+    .btn-primary { background:#0077ff; color:#fff; }
+    .btn-outline { background:#f5f6fa; color:#333; }
+
+    /* PhonePe QR Code Section */
+    .phonepe-qr-section {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .phonepe-qr-section img {
+      width: 300px;
+      height: auto;
+    }
+    .phonepe-qr-section h2 {
+      margin: 10px 0;
+      color: #0077ff;
+    }
+    .phonepe-qr-section p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .phonepe-qr-section p small {
+      font-size: small;
+      color: gray;
+    }
+
+    /* Order History Section */
+    #orderHistory {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .order-history-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .order-history-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+    .order-history-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .order-history-item:last-child {
+      border-bottom: none;
+    }
+    .order-history-item p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .order-history-item strong {
+      color: #0077ff;
+    }
+    .close-order-history {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    /* Order Details Section */
+    #orderDetails {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2001;
+    }
+    .order-details-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .order-details-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+    .order-details-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .order-details-item:last-child {
+      border-bottom: none;
+    }
+    .order-details-item p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .order-details-item strong {
+      color: #0077ff;
+    }
+    .close-order-details {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+  </style>
+</head>
+<body background="BCG.jpg">
+  <div id="loginPage" class="login-container">
+    <div class="login-form">
+      <h2>Login to SPS products</h2>
+      <div id="loginFields">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required pattern="[0-9]{10}">
+        </div>
+        <button onclick="sendOTP()">Get OTP</button>
+      </div>
+      <div id="otpSection" class="otp-section">
+        <div class="form-group">
+          <label for="otp">Enter OTP</label>
+          <input type="text" id="otp" maxlength="6" required>
+        </div>
+        <button onclick="verifyOTP()">Verify OTP</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo"> SPS</div>
+      <div class="search-wrap">
+        <input id="siteSearch" type="search" placeholder="Search products, e.g. oil,sugar,seeds...">
+        <button onclick="doSearch()">🔍</button>
+        <button onclick="goHome()" title="Home">🏠</button>
+      </div>
+      <div class="header-actions">
+        <div class="purchase-menu" id="purchaseMenu" onclick="togglePurchaseMenu(event)">🛍️</div>
+        <div class="purchase-dropdown hidden" id="purchaseDropdown">
+          <button onclick="viewOrders()">Orders</button>
+          <button onclick="viewWishlist()">Wishlist</button>
+          <button onclick="openHelp()">Help Center</button>
+          <button onclick="toggleProfile()">Profile</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="profile-icon" onclick="toggleProfile()">👤</div>
+
+  <div id="profileContainer" class="profile-container">
+    <div class="profile-form">
+      <button class="close-profile" onclick="toggleProfile()">×</button>
+      <h2>User Profile</h2>
+      <div class="form-group">
+        <label for="profileName">Full Name</label>
+        <input type="text" id="profileName" required>
+      </div>
+      <div class="form-group">
+        <label for="profileEmail">Email</label>
+        <input type="email" id="profileEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="profilePhone">Phone Number</label>
+        <input type="tel" id="profilePhone" required pattern="[0-9]{10}">
+      </div>
+      <div class="profile-photo-container">
+        <img id="profilePhoto" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" alt="Profile Photo" class="profile-photo">
+        <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+        <label for="photoInput" class="photo-upload-btn">Change Photo</label>
+      </div>
+      <div class="address-grid">
+        <div class="form-group">
+          <label for="profileCountry">Country</label>
+          <input type="text" id="profileCountry" required>
+        </div>
+        <div class="form-group">
+          <label for="profileState">State</label>
+          <input type="text" id="profileState" required>
+        </div>
+        <div class="form-group">
+          <label for="profileDistrict">District</label>
+          <input type="text" id="profileDistrict" required>
+        </div>
+        <div class="form-group">
+          <label for="profilePincode">PIN Code</label>
+          <input type="text" id="profilePincode" pattern="[0-9]{6}" required>
+        </div>
+        <div class="form-group full-width">
+          <label for="profileAddress">Street Address</label>
+          <textarea id="profileAddress" placeholder="Enter your detailed street address" required></textarea>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button onclick="updateProfile()">Save Changes</button>
+        <button onclick="toggleProfile()" style="background: #666;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Added Order History Section in Profile -->
+  <div id="orderHistory" class="profile-container">
+    <div class="profile-form">
+      <button class="close-profile" onclick="toggleProfile()">×</button>
+      <h2>Order History</h2>
+      <div id="orderHistoryList" style="margin-top: 20px;">
+        <!-- Orders will be dynamically loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Added Order Details Button and Section -->
+  <div id="orderDetails" class="profile-container">
+    <div class="profile-form">
+        <button class="close-profile" onclick="toggleOrderDetails()">×</button>
+        <h2>Order Details</h2>
+        <div id="orderDetailsList" style="margin-top: 20px;">
+            <!-- Order details will be dynamically loaded here -->
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="product-grid" id="productList">
+      <!-- Products will load here -->
+    </div>
+  </div>
+
+  <div class="cart" id="cart">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+
+  <!-- Updated Footer Section -->
+  <footer>
+    <button onclick="toggleOrderDetails()" style="padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 20px;">View Order History</button>
+    <p>© 2025 SPs | Freshness Items</p>
+  </footer>
+
+  <script>
+    // -- Data
+    const products = [
+      { id: 1, name: 'Fresh Cow Milk (1L)', price: 45, img: 'https://tse4.mm.bing.net/th/id/OIP.eNL84fnRZActtdWFcZnUdwHaFg?rs=1&pid=ImgDetMain&o=7&rm=3' },
+      { id: 2, name: 'Sunpure oil (1L)', price: 145, img: 'https://5.imimg.com/data5/SELLER/Default/2022/9/OC/EL/WT/38290261/1-l-sunpure-refined-sunflower-oil-1000x1000.jpg' },
+      { id: 3, name: 'Egg (1per)', price: 6.0, img: 'https://t4.ftcdn.net/jpg/01/04/29/89/360_F_104298965_G5fb6JKwBv8CwJB6WoXwOGH6L0IOqB3x.jpg' },
+      { id: 4, name: 'Wheet Ashirvaad (1kg)', price: 60, img: 'https://www.quicklly.com/upload_images/product/1613684248-aashirvaad-whole-wheat-flour.jpg' },
+      { id: 5, name: 'Curd (200 ml)', price: 14, img: 'https://m.media-amazon.com/images/I/51kq0ZummML._SX425_.jpg' },
+      { id: 6, name: 'Sugar (1Kg)', price: 45, img: 'https://bolnews.s3.amazonaws.com/wp-content/uploads/2020/07/Sugar-disadvantages.jpg' },
+      { id: 7, name: 'Nandini Pure Ghee 500 ml (Jar)', price: 450, img: 'https://www.jiomart.com/images/product/600x600/490011402/nandini-pure-ghee-500-ml-jar-product-images-o490011402-p490011402-0-202203150038.jpg' },
+      { id: 8, name: 'Arasun Soap', price: 23, img: 'https://www.harishfoodzone.com/jb-content/uploads/2020/08/arasan-soap-1img-600x600.jpg' }
+    ];
+
+    const cart = [];
+    let isLoggedIn = false;
+    let selectedPaymentMethod = '';
+
+    // Minimal user profile stored in localStorage
+    let userProfile = {
+      name: '', email: '', phone: '', photo: '', address: '', country: '', state: '', district: '', pincode: ''
+    };
+
+    // -- Utilities
+    function calculateTotal(items) {
+      return items.reduce((t, i) => t + (i?.price || 0), 0);
+    }
+
+    // -- Products & Cart
+    function loadProducts() {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '';
+      products.forEach(p => {
+        productList.innerHTML += `
+          <div class="product">
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <div class="price">₹${p.price}</div>
+            <div style="display: flex; gap: 10px; justify-content: center">
+              <button onclick="addToCart(${p.id})">Add to Cart</button>
+              <button class="buy-now-btn" onclick="buyNow(${p.id})">Buy Now</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Search functionality
+    function doSearch() {
+      const searchInput = document.getElementById('siteSearch');
+      const query = searchInput.value.toLowerCase().trim();
+      if (!query) return;
+
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '';
+
+      const filteredProducts = products.filter(p =>
+        p.name.toLowerCase().includes(query)
+      );
+
+      if (filteredProducts.length === 0) {
+        productList.innerHTML = '<div style="text-align: center; padding: 20px;">No products found. Try a different search term.</div>';
+      } else {
+        filteredProducts.forEach(p => {
+          productList.innerHTML += `
+            <div class="product">
+              <img src="${p.img}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <div class="price">₹${p.price}</div>
+              <div style="display: flex; gap: 10px; justify-content: center">
+                <button onclick="addToCart(${p.id})">Add to Cart</button>
+                <button class="buy-now-btn" onclick="buyNow(${p.id})">Buy Now</button>
+              </div>
+            </div>`;
+        });
+      }
+    }
+
+    // Return to home page and show all products
+    function goHome() {
+      const searchInput = document.getElementById('siteSearch');
+      searchInput.value = '';  // Clear search input
+      loadProducts();  // Load all products
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      if (!cartItems) return;
+      cartItems.innerHTML = '';
+      cart.forEach((item, idx) => {
+        cartItems.innerHTML += `
+          <div class="cart-item">
+            <span>${item.name}</span>
+            <span>₹${item.price} <button onclick="removeFromCart(${idx})">×</button></span>
+          </div>`;
+      });
+      if (cart.length) {
+        cartItems.innerHTML += `
+          <div class="cart-item" style="font-weight: bold; border-top: 2px solid #eee; margin-top: 10px; padding-top: 10px;">
+            <span>Total:</span>
+            <span>₹${calculateTotal(cart)}</span>
+          </div>`;
+      }
+    }
+
+    function addToCart(id) {
+      if (!isLoggedIn) return alert('Please login first to add items to cart');
+      const product = products.find(p => p.id === id);
+      if (!product) return alert('Product not found');
+      cart.push(product);
+      renderCart();
+      alert(`${product.name} added to cart!`);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function checkout() {
+      if (!isLoggedIn) return alert('Please login first to checkout');
+      if (cart.length === 0) return alert('Your cart is empty!');
+      showPaymentModal(null, true);
+    }
+
+    function buyNow(productId) {
+      if (!isLoggedIn) return alert('Please login first to make a purchase');
+      const product = products.find(p => p.id === productId);
+      if (!product) return alert('Product not found');
+      showPaymentModal(product, false);
+    }
+
+    // -- Payment modal and flow
+    function showPaymentModal(product, isCart) {
+      // Ensure profile has address & phone
+      if (!userProfile.address || !userProfile.phone) {
+        alert('Please complete your profile with delivery address before making a purchase');
+        toggleProfile();
+        return;
+      }
+
+      const items = isCart ? cart.slice() : [product];
+      const total = calculateTotal(items);
+
+      // Create modal
+      const modal = document.createElement('div');
+      modal.className = 'payment-modal';
+      modal.id = 'paymentModal';
+      modal.style.display = 'flex';
+      modal.dataset.isCart = isCart ? 'true' : 'false';
+      if (!isCart && product) modal.dataset.productId = product.id;
+
+      const itemsHtml = items.map(it => `<div style="display:flex;justify-content:space-between;margin:6px 0;"><span>${it.name}</span><span>₹${it.price}</span></div>`).join('');
+
+      modal.innerHTML = `
+        <div class="payment-container">
+          <div class="payment-header">
+            <h2>Complete Your Purchase</h2>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button class="btn-outline" onclick="closePaymentModal(); goHome()" title="Back to Home">← Home</button>
+              <button class="payment-close" onclick="closePaymentModal()">×</button>
+            </div>
+          </div>
+          <div class="order-summary">
+            <h3>Order Summary</h3>
+            ${itemsHtml}
+            <div style="border-top:1px solid #eee;margin-top:10px;padding-top:10px;"><strong>Total: ₹${total}</strong></div>
+          </div>
+          <div class="delivery-address">
+            <h3>Delivery Address</h3>
+            <p>${userProfile.name || ''}</p>
+            <p>${userProfile.address || ''}</p>
+            <p>${userProfile.district || ''}, ${userProfile.state || ''}</p>
+            <p>${userProfile.country || ''} - ${userProfile.pincode || ''}</p>
+            <p>Phone: ${userProfile.phone || ''}</p>
+          </div>
+          <div class="payment-methods">
+            <div class="payment-method" data-method="googlepay" onclick="selectPayment('googlepay')"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Google_Pay_Logo_%282020%29.svg/768px-Google_Pay_Logo_%282020%29.svg.png?20210501103928" alt="Google Pay"><span>Google Pay</span></div>
+            <div class="payment-method" data-method="phonepay" onclick="selectPayment('phonepay')"><img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe"><span>PhonePe</span></div>
+            <div class="payment-method" data-method="paytm" onclick="selectPayment('paytm')"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/2560px-Paytm_Logo_%28standalone%29.svg.png" alt="Paytm"><span>Paytm</span></div>
+            <!-- COD now correctly calls selectPayment('cod') -->
+            <div class="payment-method" data-method="cod" onclick="selectPayment('cod')"><img src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png" alt="COD"><span>Cash on Delivery</span></div>
+          </div>
+
+          <!-- Changed QR image id to paymentQRImg for easier targeting -->
+          <div class="payment-qr hidden" id="paymentQR">
+            <img id="paymentQRImg" src="" alt="QR">
+            <p>Scan to pay ₹${total}</p>
+          </div>
+
+          <div id="paymentActions" class="confirmation-actions" style="margin-top:16px;justify-content:center;">
+            <button class="btn-primary" onclick="processPayment()">Complete Purchase</button>
+            <button class="btn-outline" onclick="closePaymentModal(); goHome()" title="Back to Home">← Home</button>
+            <button class="payment-close" onclick="closePaymentModal()">×</button>
+          </div>
+        </div>`;
+
+      document.body.appendChild(modal);
+    }
+
+    // Added QR image URLs 
+    const paymentQRs = {
+        googlepay: 'QRG-pay.jpg',
+        phonepay:  'QR.jpg',
+        paytm:     'https://example.com/qr_paytm.png'
+    };
+
+    function selectPayment(method) {
+      selectedPaymentMethod = method;
+      const modal = document.getElementById('paymentModal');
+      if (!modal) return;
+      modal.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+      const el = modal.querySelector(`.payment-method[data-method="${method}"]`);
+      if (el) el.classList.add('selected');
+
+      const qr = document.getElementById('paymentQR');
+      if (qr) {
+        if (method === 'cod') {
+          qr.classList.add('hidden');
+        } else {
+          qr.classList.remove('hidden');
+          const qrImage = qr.querySelector('img');
+          if (qrImage) qrImage.src = paymentQRs[method] || '';
+        }
+      }
+
+      const actions = modal.querySelector('#paymentActions');
+      const isCart = modal.dataset.isCart === 'true';
+      const items = isCart ? cart : [products.find(p => p.id == modal.dataset.productId)];
+      const amount = calculateTotal(items);
+
+      if (actions) {
+        if (method === 'cod') {
+          actions.innerHTML = `<button class="btn-primary" onclick="processPayment()">Confirm COD</button>`;
+        } else {
+          actions.innerHTML = `
+            <button class="btn-outline" onclick="closePaymentModal(); goHome()">Back to Home</button>
+            <button class="btn-primary" onclick="processPayment()">Pay ₹${amount}</button>
+            <button class="btn-outline" onclick="closePaymentModal(); goHome()" title="Back to Home">← Home</button>
+            <button class="payment-close" onclick="closePaymentModal()">×</button>
+          `;
+        }
+      }
+    }
+
+    function closePaymentModal() {
+      const m = document.getElementById('paymentModal'); if (m) m.remove(); selectedPaymentMethod = '';
+    }
+
+    function processPayment() {
+      const modal = document.getElementById('paymentModal'); if (!modal) return;
+      if (!selectedPaymentMethod) return alert('Please select a payment method');
+
+      const isCart = modal.dataset.isCart === 'true';
+      const items = isCart ? cart.slice() : [products.find(p => p.id == modal.dataset.productId)];
+      const total = calculateTotal(items);
+
+      const order = {
+        id: 'ORD' + Date.now(),
+        date: new Date().toISOString(),
+        items: items.map(i => ({ id: i.id, name: i.name, price: i.price })),
+        paymentMethod: selectedPaymentMethod,
+        status: selectedPaymentMethod === 'cod' ? 'Pending' : 'Processing',
+        address: { ...userProfile },
+        amount: total
+      };
+
+      // -- Updated Cash on Delivery confirmation functionality
+      if (selectedPaymentMethod === 'cod') {
+        const confirmCOD = confirm('Are you sure you want to confirm Cash on Delivery?');
+        if (!confirmCOD) return;
+      }
+
+      saveOrderToStorage(order);
+      closePaymentModal();
+      showOrderConfirmation(order, selectedPaymentMethod === 'cod' ? `Cash on Delivery: ₹${total}` : `Payment of ₹${total} initiated`);
+
+      if (isCart) { cart.length = 0; renderCart(); }
+    }
+
+    // -- Orders & Confirmation
+    function saveOrderToStorage(order) {
+      try { const raw = localStorage.getItem('milkkart_orders'); const arr = raw ? JSON.parse(raw) : []; arr.unshift(order); localStorage.setItem('milkkart_orders', JSON.stringify(arr)); } catch (e) { console.warn('Could not save order', e); }
+    }
+
+    function loadOrdersFromStorage() { try { const raw = localStorage.getItem('milkkart_orders'); return raw ? JSON.parse(raw) : []; } catch (e) { console.warn('Could not load orders', e); return []; } }
+
+    function viewOrders() {
+      const orders = loadOrdersFromStorage();
+      let modal = document.getElementById('ordersModal');
+      if (!modal) {
+        modal = document.createElement('div'); modal.id = 'ordersModal'; modal.className = 'confirmation-modal';
+        modal.innerHTML = `<div class="confirmation-container" style="max-width:700px;text-align:left;"><div style="display:flex;justify-content:space-between;align-items:center;"><h3>Your Orders</h3><button onclick="document.getElementById('ordersModal').style.display='none'">×</button></div><div id="ordersList" style="margin-top:12px;"></div></div>`;
+        document.body.appendChild(modal);
+      }
+      const list = modal.querySelector('#ordersList');
+      if (!orders.length) list.innerHTML = '<p>No orders yet.</p>';
+      else list.innerHTML = orders.map(o => `<div style="padding:12px;border-bottom:1px solid #eee;"><div style="display:flex;justify-content:space-between;align-items:center;"><div><strong>${o.items[0]?.name || ''}</strong><br><small>${new Date(o.date).toLocaleString()}</small></div><div><strong>₹${o.amount}</strong><br><small>${o.paymentMethod}</small></div></div><div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end;"><button onclick='showOrderDetails("${o.id}")'>Details</button></div></div>`).join('');
+      modal.style.display = 'flex';
+    }
+
+    function showOrderDetails(orderId) {
+      const orders = loadOrdersFromStorage(); const o = orders.find(x => x.id === orderId); if (!o) return alert('Order not found');
+      let modal = document.getElementById('ordersModal'); if (!modal) return;
+      modal.querySelector('#ordersList').innerHTML = `<div style="padding:12px;"><h3>Order ${o.id}</h3><p><strong>Items:</strong> ${o.items.map(i=>i.name).join(', ')}</p><p><strong>Amount:</strong> ₹${o.amount}</p><p><strong>Payment:</strong> ${o.paymentMethod}</p><p><strong>Status:</strong> ${o.status}</p><p><strong>Delivery To:</strong><br>${o.address.name || ''}<br>${o.address.address || ''}<br>${o.address.district || ''}, ${o.address.state || ''} - ${o.address.pincode || ''}</p><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;"><button onclick="viewOrders()">Back to Orders</button><button onclick="(function(){document.getElementById('ordersModal').style.display='none'; continueShopping();})()">Close</button></div></div>`;
+    }
+
+    function showOrderConfirmation(order, message) {
+      let modal = document.getElementById('confirmationModal');
+      if (!modal) { modal = document.createElement('div'); modal.id = 'confirmationModal'; modal.className = 'confirmation-modal'; modal.innerHTML = `<div class="confirmation-container"><div class="confirmation-icon">✓</div><div class="confirmation-title">Thank you for your order!</div><div class="confirmation-sub" id="confirmationMessage"></div><div id="confirmationSummary" style="margin-top:8px;color:#444"></div><div class="confirmation-actions"><button class="btn-primary" onclick="goToOrders()">View Orders</button><button class="btn-outline" onclick="continueShopping()">Continue Shopping</button></div></div>`; document.body.appendChild(modal); }
+      document.getElementById('confirmationMessage').textContent = message || '';
+      const sumEl = document.getElementById('confirmationSummary'); if (order) sumEl.innerHTML = `<strong>Order ID:</strong> ${order.id}<br><strong>Amount:</strong> ₹${order.amount}`; else sumEl.innerHTML = '';
+      modal.style.display = 'flex';
+    }
+
+    function closeConfirmation() { const m = document.getElementById('confirmationModal'); if (m) m.style.display = 'none'; }
+    function goToOrders() { closeConfirmation(); viewOrders(); }
+    function continueShopping() { closeConfirmation(); loadProducts(); window.scrollTo(0,0); }
+
+    // -- Search & header
+    function doSearch() { const q = document.getElementById('siteSearch').value.trim().toLowerCase(); if (!q) return alert('Please enter a search term'); const results = products.filter(p => p.name.toLowerCase().includes(q)); const grid = document.getElementById('productList'); if (!results.length) { grid.innerHTML = '<p>No products found</p>'; return; } grid.innerHTML = ''; results.forEach(p=>{ grid.innerHTML += `<div class="product"><img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><div class="price">₹${p.price}</div><div style="display:flex;gap:10px;justify-content:center"><button onclick="addToCart(${p.id})">Add to Cart</button><button class="buy-now-btn" onclick="buyNow(${p.id})">Buy Now</button></div></div>`; }); }
+
+    function togglePurchaseMenu(e) { e.stopPropagation(); const dd = document.getElementById('purchaseDropdown'); if (dd) dd.classList.toggle('hidden'); }
+    document.addEventListener('click', () => {
+        const dd = document.getElementById('purchaseDropdown');
+        if (dd) dd.classList.add('hidden');
+    });
+
+    // -- Login & Profile
+    function sendOTP() {
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      if (!username || !email || !phone) return alert('Please fill in all fields');
+      if (phone.length !== 10 || !/^\d+$/.test(phone)) return alert('Please enter a valid 10-digit phone number');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Please enter a valid email address');
+      document.getElementById('loginFields').style.display = 'none'; document.getElementById('otpSection').classList.add('active'); alert('OTP sent to your phone and email!');
+    }
+
+    function verifyOTP() {
+      const otp = document.getElementById('otp').value; if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) return alert('Please enter a valid 6-digit OTP');
+      isLoggedIn = true; document.getElementById('loginPage').classList.add('hidden');
+
+      // If no stored profile exists, prefill from login form
+      try {
+        const raw = localStorage.getItem('milkkart_user');
+        if (!raw) {
+          userProfile.name = document.getElementById('username').value || userProfile.name;
+          userProfile.email = document.getElementById('email').value || userProfile.email;
+          userProfile.phone = document.getElementById('phone').value || userProfile.phone;
+          saveProfileToStorage();
+        } else {
+          loadProfileFromStorage();
+        }
+      } catch (e) { console.warn('verifyOTP storage error', e); }
+
+      alert('Login successful!');
+    }
+
+    if (!isLoggedIn) document.getElementById('loginPage').classList.remove('hidden');
+
+    function saveProfileToStorage() { try { localStorage.setItem('milkkart_user', JSON.stringify(userProfile)); } catch (e) { console.warn('Could not save profile', e); } }
+    function loadProfileFromStorage() { try { const raw = localStorage.getItem('milkkart_user'); if (raw) userProfile = Object.assign(userProfile, JSON.parse(raw)); } catch (e) { console.warn('Could not load profile', e); } }
+
+    loadProfileFromStorage();
+
+    function handlePhotoUpload(e) { const f = e.target.files[0]; if (!f) return; if (f.size > 5_000_000) return alert('File too large (max 5MB)'); const r = new FileReader(); r.onload = ev => { document.getElementById('profilePhoto').src = ev.target.result; userProfile.photo = ev.target.result; saveProfileToStorage(); }; r.readAsDataURL(f); }
+
+    function toggleProfile() { if (!isLoggedIn) return alert('Please login first to access your profile'); const pc = document.getElementById('profileContainer'); pc.classList.toggle('active'); if (pc.classList.contains('active')) { document.getElementById('profileName').value = userProfile.name || ''; document.getElementById('profileEmail').value = userProfile.email || ''; document.getElementById('profilePhone').value = userProfile.phone || ''; document.getElementById('profileAddress').value = userProfile.address || ''; document.getElementById('profileCountry').value = userProfile.country || ''; document.getElementById('profileState').value = userProfile.state || ''; document.getElementById('profileDistrict').value = userProfile.district || ''; document.getElementById('profilePincode').value = userProfile.pincode || ''; if (userProfile.photo) document.getElementById('profilePhoto').src = userProfile.photo; } }
+
+    function updateProfile() {
+      const name = document.getElementById('profileName').value; const email = document.getElementById('profileEmail').value; const phone = document.getElementById('profilePhone').value; const country = document.getElementById('profileCountry').value; const state = document.getElementById('profileState').value; const district = document.getElementById('profileDistrict').value; const pincode = document.getElementById('profilePincode').value; const address = document.getElementById('profileAddress').value;
+      if (!name || !email || !phone || !country || !state || !district || !pincode || !address) return alert('Please fill in all fields');
+      if (phone.length !== 10 || !/^\d+$/.test(phone)) return alert('Please enter a valid 10-digit phone number');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Please enter a valid email address');
+      if (!/^\d{6}$/.test(pincode)) return alert('Please enter a valid 6-digit PIN code');
+      userProfile = { ...userProfile, name, email, phone, country, state, district, pincode, address };
+      saveProfileToStorage(); alert('Profile updated successfully!'); toggleProfile();
+    }
+
+    // -- Order History
+    function loadOrderHistory() {
+      const orders = loadOrdersFromStorage();
+      const orderHistoryList = document.getElementById('orderHistoryList');
+      if (!orderHistoryList) return;
+
+      orderHistoryList.innerHTML = '';
+      if (!orders.length) {
+        orderHistoryList.innerHTML = '<p>No orders found.</p>';
+      } else {
+        orders.forEach(order => {
+          orderHistoryList.innerHTML += `
+            <div style="padding: 12px; border-bottom: 1px solid #ddd;">
+              <p><strong>Order ID:</strong> ${order.id}</p>
+              <p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p>
+              <p><strong>Items:</strong> ${order.items.map(item => item.name).join(', ')}</p>
+              <p><strong>Total Amount:</strong> ₹${order.amount}</p>
+              <p><strong>Status:</strong> ${order.status}</p>
+            </div>`;
+        });
+      }
+    }
+
+    function toggleOrderHistory() {
+      const orderHistory = document.getElementById('orderHistory');
+      if (orderHistory) {
+        orderHistory.classList.toggle('active');
+        if (orderHistory.classList.contains('active')) {
+          loadOrderHistory();
+        }
+      }
+    }
+
+    // -- Order Details
+    function loadOrderDetails() {
+      const orders = loadOrdersFromStorage();
+      const orderDetailsList = document.getElementById('orderDetailsList');
+      if (!orderDetailsList) return;
+
+      orderDetailsList.innerHTML = '';
+      if (!orders.length) {
+        orderDetailsList.innerHTML = '<p>No booked items found.</p>';
+      } else {
+        orders.forEach(order => {
+          orderDetailsList.innerHTML += `
+            <div style="padding: 12px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                  <p><strong>${order.items[0]?.name || ''}</strong></p>
+                  <p>${new Date(order.date).toLocaleString()}</p>
+              </div>
+              <div style="text-align: right;">
+                  <p><strong>₹${order.amount}</strong></p>
+                  <p>${order.paymentMethod}</p>
+                  <button style="padding: 5px 10px; font-size: 14px; cursor: pointer;" onclick="showOrderDetails('${order.id}')">Details</button>
+              </div>
+            </div>`;
+        });
+      }
+    }
+
+    function toggleOrderDetails() {
+      const orderDetails = document.getElementById('orderDetails');
+      if (orderDetails) {
+        orderDetails.classList.toggle('active');
+        if (orderDetails.classList.contains('active')) {
+          loadOrderDetails();
+        }
+      }
+    }
+
+    // -- Init
+    loadProducts(); renderCart();
+  </script>
+</body>
+</html>
